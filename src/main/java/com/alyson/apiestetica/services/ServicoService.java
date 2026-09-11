@@ -22,7 +22,7 @@ public class ServicoService {
         this.agendamentoRepository = agendamentoRepository;
     }
 
-    public ServicoResponseDTO cadastrar(Long id, ServicoRequestDTO dto) {
+    public ServicoResponseDTO cadastrar( ServicoRequestDTO dto) {
         Servico servico = new Servico(dto);
         servicoRepository.save(servico);
 

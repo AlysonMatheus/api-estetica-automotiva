@@ -10,35 +10,54 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/carro")
-public class ClienteController {
-    @Autowired
-    private ServicoService servicoService;
+@RequestMapping("/servico")
+public class ServicoController {
+
+    private final ServicoService servicoService;
+
+    public ServicoController(ServicoService servicoService) {
+        this.servicoService = servicoService;
+    }
 
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<ServicoResponseDTO>cadastrar(@RequestBody ServicoRequestDTO dto){
+    public ResponseEntity<ServicoResponseDTO> cadastrar(@RequestBody ServicoRequestDTO dto) {
         var cadastro = servicoService.cadastrar(dto);
         return ResponseEntity.ok(cadastro);
     }
-    @PutMapping("/atualizar")
-    public ResponseEntity<ServicoResponseDTO>atualizar(Long id,ServicoRequestDTO dto){
-          var atualizar = servicoService.atualizar(id,dto)  ;
-          return ResponseEntity.ok(atualizar);
+
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<ServicoResponseDTO> atualizar(@PathVariable Long id, @RequestBody ServicoRequestDTO dto) {
+        var atualizar = servicoService.atualizar(id, dto);
+        return ResponseEntity.ok(atualizar);
 
     }
-    @GetMapping()
-    public ResponseEntity<ServicoResponseDTO>buscarServico(Long id){
+
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<ServicoResponseDTO> buscarServico(@PathVariable Long id) {
         var buscarServico = servicoService.buscarServico(id);
         return ResponseEntity.ok(buscarServico);
 
     }
-    public ResponseEntity<List<ServicoResponseDTO>> listarServico(){
-        var listarServico = listarServico();
+
+    @GetMapping
+    public ResponseEntity<List<ServicoResponseDTO>> listarServico() {
+        var listarServico = servicoService.listarServicos();
         return ResponseEntity.ok(listarServico);
 
     }
 
+    @PatchMapping("/ativar/{id}")
+    public ResponseEntity<Void> ativarServico(@PathVariable Long id) {
+        servicoService.ativarServico(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("desativar/{id}")
+    public ResponseEntity<Void> desativarServico(@PathVariable Long id) {
+        servicoService.desativarServico(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }
