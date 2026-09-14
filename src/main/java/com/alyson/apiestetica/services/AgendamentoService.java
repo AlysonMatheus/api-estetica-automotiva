@@ -26,11 +26,23 @@ public class AgendamentoService {
         this.servicoRepository = servicoRepository;
         this.carroRepository = carroRepository;
     }
+    @Transactional
+    public AgendamentoResponseDTO cadastrar( AgendamentoRequestDTO dto) {
 
-    public AgendamentoResponseDTO cadastrar(AgendamentoRequestDTO agendamentoDTO) {
+        Carro carro = carroRepository.findById(dto.idCarro()).orElseThrow(() -> new RuntimeException("Carro não encontrado"));
 
-        Agendamento agendamento = agendamentoRepository.findById(agendamentoDTO.idCarro()).orElseThrow(()-> new RuntimeException("Carro não encontrado"));
+        Agendamento agendamento = new Agendamento(dto, carro);
         agendamentoRepository.save(agendamento);
+
+        dto.servicos().forEach(idServico -> {
+            Servico servico = servicoRepository.findById(idServico).orElseThrow(() -> new RuntimeException("Servico não encontrado"));
+            AgendamentoServicoId agendamentoServicoId = new AgendamentoServicoId(agendamento.getIdAgendamento(), servico.getIdServico());
+            AgendamentoServico agendamentoServico = new AgendamentoServico(agendamentoServicoId, agendamento, servico, servico.getPreco());
+            agendamento.getServicos().add(agendamentoServico);
+        });
+
+        agendamentoRepository.save(agendamento);
+
         return new AgendamentoResponseDTO(agendamento);
     }
 
@@ -65,6 +77,7 @@ public class AgendamentoService {
         var salvar = agendamentoRepository.save(agendamento);
         return new AgendamentoResponseDTO(salvar);
     }
+    /*
 @Transactional
     public AgendamentoResponseDTO vincularServicos( AgendamentoRequestDTO dto) {
 
@@ -84,6 +97,8 @@ public class AgendamentoService {
 
         return new AgendamentoResponseDTO(agendamento);
     }
+
+     */
 
 
     }

@@ -3,13 +3,18 @@ package com.alyson.apiestetica.controller;
 import com.alyson.apiestetica.entity.request.CarroRequestDTO;
 import com.alyson.apiestetica.entity.response.CarroResponseDTO;
 import com.alyson.apiestetica.services.CarroService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/carro")
+@Tag(
+        name = "Veículos",
+        description = "Endpoints para gerenciamento dos veículos vinculados aos clientes"
+)
 public class CarroController {
 
     private final CarroService carroService;
@@ -18,18 +23,31 @@ public class CarroController {
         this.carroService = carroService;
     }
 
+    @Operation(
+            summary = "Cadastrar veículo",
+            description = "Cadastra um novo veículo e o vincula a um cliente já existente no sistema."
+    )
+
     @PostMapping("/cadastrar")
-    public ResponseEntity<CarroResponseDTO> cadastrar(@PathVariable Long id, @RequestBody CarroRequestDTO dto) {
-        var cadastrar = carroService.cadastrar(id, dto);
+    public ResponseEntity<CarroResponseDTO> cadastrar(@RequestBody CarroRequestDTO dto) {
+        var cadastrar = carroService.cadastrar(dto);
         return ResponseEntity.ok(cadastrar);
 
     }
-
+    @Operation(
+            summary = "Atualizar veículo",
+            description = "Atualiza os dados de um veículo existente, como modelo, marca, placa, cor e ano."
+    )
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<CarroResponseDTO> atualizar(@PathVariable Long id, @RequestBody CarroRequestDTO dto) {
         var atualizar = carroService.atualizarCarro(id, dto);
         return ResponseEntity.ok(atualizar);
     }
+
+    @Operation(
+            summary = "Buscar veículo por ID",
+            description = "Retorna os dados de um veículo específico a partir do seu identificador."
+    )
 
     @GetMapping("/{id}")
     public ResponseEntity<CarroResponseDTO> buscarCarro(@PathVariable Long id) {
@@ -38,11 +56,15 @@ public class CarroController {
 
     }
 
-    @GetMapping("cliente/{ìd}")
-    public ResponseEntity<List<CarroResponseDTO>> buscarCarroporCliente(@PathVariable Long id) {
-        var buscarPorCliente = carroService.buscarCarroCliente(id);
-        return ResponseEntity.ok(buscarPorCliente);
-    }
+    //    @GetMapping("cliente/{ìd}")
+//    public ResponseEntity<List<CarroResponseDTO>> buscarCarroporCliente(@PathVariable Long id) {
+//        var buscarPorCliente = carroService.buscarCarroCliente(id);
+//        return ResponseEntity.ok(buscarPorCliente);
+//    }
+    @Operation(
+            summary = "Excluir veículo",
+            description = "Remove um veículo cadastrado no sistema a partir do seu identificador."
+    )
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {

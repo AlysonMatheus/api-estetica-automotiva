@@ -24,8 +24,8 @@ public class CarroService {
         this.clienteRepository = clienteRepository;
     }
 
-    public CarroResponseDTO cadastrar(Long id, CarroRequestDTO dto) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    public CarroResponseDTO cadastrar(CarroRequestDTO dto) {
+        Cliente cliente = clienteRepository.findById(dto.idCliente()).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
         Carro carro = new Carro(dto, cliente);
 
         carroRepository.save(carro);
@@ -45,10 +45,10 @@ public class CarroService {
 
     }
 
-    public List<CarroResponseDTO> buscarCarroCliente(Long id) {
-        List<Carro> carros = carroRepository.findByClienteId(id);
-        return carros.stream().map(CarroResponseDTO::new).toList();
-    }
+//    public List<CarroResponseDTO> buscarCarroCliente(Long id) {
+//        List<Carro> carros = carroRepository.findByClienteId(id);
+//        return carros.stream().map(CarroResponseDTO::new).toList();
+//    }
 
     public void excluir(Long id) {
         Carro carro = carroRepository.findById(id).orElseThrow(() -> new RuntimeException("Carro " + id + "nao encontrado"));
