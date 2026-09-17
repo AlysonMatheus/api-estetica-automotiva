@@ -1,6 +1,6 @@
 package com.alyson.apiestetica.entity.request;
 
-public record CarroRequestDTO(
+public record VeiculoRequestDTO(
         Long idCliente,
         String modelo,
         String marca,

@@ -43,7 +43,7 @@ public class Cliente {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Carro> carros = new ArrayList<>();
+    private List<Veiculo> veiculos = new ArrayList<>();
 
     public Cliente(ClienteRequestDTO dto) {
         this.nome = dto.nome();

@@ -1,8 +1,8 @@
 package com.alyson.apiestetica.controller;
 
-import com.alyson.apiestetica.entity.request.CarroRequestDTO;
-import com.alyson.apiestetica.entity.response.CarroResponseDTO;
-import com.alyson.apiestetica.services.CarroService;
+import com.alyson.apiestetica.entity.request.VeiculoRequestDTO;
+import com.alyson.apiestetica.entity.response.VeiculoResponseDTO;
+import com.alyson.apiestetica.services.VeiculoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/carro")
+@RequestMapping("/veiculo")
 @Tag(
         name = "Veículos",
         description = "Endpoints para gerenciamento dos veículos vinculados aos clientes"
 )
-public class CarroController {
+public class VeiculoController {
 
-    private final CarroService carroService;
+    private final VeiculoService veiculoService;
 
-    public CarroController(CarroService carroService) {
-        this.carroService = carroService;
+    public VeiculoController(VeiculoService veiculoService) {
+        this.veiculoService = veiculoService;
     }
 
     @Operation(
@@ -29,8 +29,8 @@ public class CarroController {
     )
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<CarroResponseDTO> cadastrar(@RequestBody CarroRequestDTO dto) {
-        var cadastrar = carroService.cadastrar(dto);
+    public ResponseEntity<VeiculoResponseDTO> cadastrar(@RequestBody VeiculoRequestDTO dto) {
+        var cadastrar = veiculoService.cadastrar(dto);
         return ResponseEntity.ok(cadastrar);
 
     }
@@ -39,8 +39,8 @@ public class CarroController {
             description = "Atualiza os dados de um veículo existente, como modelo, marca, placa, cor e ano."
     )
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<CarroResponseDTO> atualizar(@PathVariable Long id, @RequestBody CarroRequestDTO dto) {
-        var atualizar = carroService.atualizarCarro(id, dto);
+    public ResponseEntity<VeiculoResponseDTO> atualizar(@PathVariable Long id, @RequestBody VeiculoRequestDTO dto) {
+        var atualizar = veiculoService.atualizar(id, dto);
         return ResponseEntity.ok(atualizar);
     }
 
@@ -50,8 +50,8 @@ public class CarroController {
     )
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarroResponseDTO> buscarCarro(@PathVariable Long id) {
-        var buscar = carroService.buscarCarro(id);
+    public ResponseEntity<VeiculoResponseDTO> buscarCarro(@PathVariable Long id) {
+        var buscar = veiculoService.buscarVeiculo(id);
         return ResponseEntity.ok(buscar);
 
     }
@@ -68,7 +68,7 @@ public class CarroController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        carroService.excluir(id);
+        veiculoService.excluir(id);
         return ResponseEntity.noContent().build();
 
 

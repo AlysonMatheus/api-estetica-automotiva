@@ -6,7 +6,7 @@ import com.alyson.apiestetica.entity.request.AgendamentoRequestDTO;
 import com.alyson.apiestetica.entity.response.AgendamentoResponseDTO;
 import com.alyson.apiestetica.enums.StatusAgendamento;
 import com.alyson.apiestetica.repository.AgendamentoRepository;
-import com.alyson.apiestetica.repository.CarroRepository;
+import com.alyson.apiestetica.repository.VeiculoRepository;
 import com.alyson.apiestetica.repository.ServicoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -18,20 +18,20 @@ public class AgendamentoService {
 
     private final AgendamentoRepository agendamentoRepository;
     private final ServicoRepository servicoRepository;
-    private final CarroRepository carroRepository;
+    private final VeiculoRepository veiculoRepository;
 
-    public AgendamentoService(AgendamentoRepository agendamentoRepository, ServicoRepository servicoRepository, CarroRepository carroRepository) {
+    public AgendamentoService(AgendamentoRepository agendamentoRepository, ServicoRepository servicoRepository, VeiculoRepository veiculoRepository) {
 
         this.agendamentoRepository = agendamentoRepository;
         this.servicoRepository = servicoRepository;
-        this.carroRepository = carroRepository;
+        this.veiculoRepository = veiculoRepository;
     }
     @Transactional
     public AgendamentoResponseDTO cadastrar( AgendamentoRequestDTO dto) {
 
-        Carro carro = carroRepository.findById(dto.idCarro()).orElseThrow(() -> new RuntimeException("Carro não encontrado"));
+        Veiculo veiculo = veiculoRepository.findById(dto.idVeiculo()).orElseThrow(() -> new RuntimeException("Veiculo não encontrado"));
 
-        Agendamento agendamento = new Agendamento(dto, carro);
+        Agendamento agendamento = new Agendamento(dto, veiculo);
         agendamentoRepository.save(agendamento);
 
         dto.servicos().forEach(idServico -> {

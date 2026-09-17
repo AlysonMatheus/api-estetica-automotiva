@@ -1,6 +1,6 @@
 package com.alyson.apiestetica.entity;
 
-import com.alyson.apiestetica.entity.request.CarroRequestDTO;
+import com.alyson.apiestetica.entity.request.VeiculoRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,12 +13,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "carro")
-public class Carro {
+public class Veiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_carro")
-    private Long idCarro;
+    @Column(name = "id_veiculo")
+    private Long idVeiculo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", nullable = false)
@@ -40,7 +40,7 @@ public class Carro {
     private Integer ano;
 
 
-    public Carro(CarroRequestDTO dto, Cliente cliente){
+    public Veiculo(VeiculoRequestDTO dto, Cliente cliente){
         this.cliente = cliente;
         this.modelo = dto.modelo();
         this.marca = dto.marca();
@@ -48,7 +48,7 @@ public class Carro {
         this.cor = dto.cor();
         this.ano = dto.ano();
     }
-    public void AtualizarDados(CarroRequestDTO dto){
+    public void AtualizarDados(VeiculoRequestDTO dto){
         this.modelo = dto.modelo();
         this.marca = dto.marca();
         this.placa = dto.marca();

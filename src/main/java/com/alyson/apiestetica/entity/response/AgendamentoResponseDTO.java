@@ -23,7 +23,7 @@ public record AgendamentoResponseDTO(
     public AgendamentoResponseDTO(Agendamento agendamento) {
         this(
                 agendamento.getIdAgendamento(),
-                agendamento.getCarro().getIdCarro(),
+                agendamento.getVeiculo().getIdVeiculo(),
                 agendamento.getHorarioInicio(),
                 agendamento.getHorarioFinal(),
                 agendamento.getStatus(),

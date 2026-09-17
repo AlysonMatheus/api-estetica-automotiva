@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record AgendamentoRequestDTO(
-        Long idCarro,
+        Long idVeiculo,
         LocalDateTime horarioInicio,
         LocalDateTime horarioFinal,
         String observacao,

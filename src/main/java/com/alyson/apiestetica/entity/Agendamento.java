@@ -27,8 +27,8 @@ public class Agendamento {
     private Long idAgendamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_carro", nullable = false)
-    private Carro carro;
+    @JoinColumn(name = "id_veiculo", nullable = false)
+    private Veiculo veiculo;
 
     @Column(name = "horario_inicio", nullable = false)
     private LocalDateTime horarioInicio;
@@ -65,9 +65,9 @@ public class Agendamento {
     }
     public Agendamento(
             AgendamentoRequestDTO dto,
-            Carro carro
+            Veiculo veiculo
     ) {
-        this.carro = carro;
+        this.veiculo = veiculo;
         this.horarioInicio = dto.horarioInicio();
         this.horarioFinal = dto.horarioFinal();
         this.observacao = dto.observacao();
