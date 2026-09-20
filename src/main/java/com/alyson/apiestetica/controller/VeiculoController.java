@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/veiculo")
@@ -55,6 +57,11 @@ public class VeiculoController {
         return ResponseEntity.ok(buscar);
 
     }
+    @GetMapping
+    public ResponseEntity<List<VeiculoResponseDTO>>listarTodos(){
+        var listar = veiculoService.listarTodos();
+        return ResponseEntity.ok(listar);
+    }
 
     //    @GetMapping("cliente/{ìd}")
 //    public ResponseEntity<List<CarroResponseDTO>> buscarCarroporCliente(@PathVariable Long id) {
@@ -66,7 +73,7 @@ public class VeiculoController {
             description = "Remove um veículo cadastrado no sistema a partir do seu identificador."
     )
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/excluir/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         veiculoService.excluir(id);
         return ResponseEntity.noContent().build();

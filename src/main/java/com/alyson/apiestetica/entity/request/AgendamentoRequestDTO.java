@@ -1,6 +1,7 @@
 package com.alyson.apiestetica.entity.request;
 
 import com.alyson.apiestetica.entity.Agendamento;
+import jakarta.validation.Valid;
 
 
 import java.time.LocalDateTime;
@@ -11,7 +12,8 @@ public record AgendamentoRequestDTO(
         LocalDateTime horarioInicio,
         LocalDateTime horarioFinal,
         String observacao,
-        List<Long> servicos
+      @Valid List<AgendamentoServicoRequestDTO> servicos
+
 ) {
 
 }

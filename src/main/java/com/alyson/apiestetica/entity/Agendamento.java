@@ -74,12 +74,10 @@ public class Agendamento {
         this.status = StatusAgendamento.AGENDADO;
 
     }
-    public void AtualizarDados(AgendamentoRequestDTO dto){
+    public void atualizarDados(AgendamentoRequestDTO dto) {
         this.horarioInicio = dto.horarioInicio();
         this.horarioFinal = dto.horarioFinal();
         this.observacao = dto.observacao();
-        this.servicos.stream().map(AgendamentoServico::getServico  ).toList();
-
     }
     public BigDecimal calcularValorTotal() {
         return this.servicos

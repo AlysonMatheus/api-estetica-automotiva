@@ -1,6 +1,7 @@
 package com.alyson.apiestetica.entity.response;
 
 import com.alyson.apiestetica.entity.Veiculo;
+import com.alyson.apiestetica.enums.CategoriaVeiculo;
 
 public record VeiculoResponseDTO(
         Long idVeiculo,
@@ -9,7 +10,9 @@ public record VeiculoResponseDTO(
         String marca,
         String placa,
         String cor,
-        Integer ano) {
+        Integer ano,
+        CategoriaVeiculo categoriaVeiculo
+) {
     public VeiculoResponseDTO(Veiculo veiculo) {
         this(
                 veiculo.getIdVeiculo(),
@@ -18,7 +21,8 @@ public record VeiculoResponseDTO(
                 veiculo.getMarca(),
                 veiculo.getPlaca(),
                 veiculo.getCor(),
-                veiculo.getAno()
+                veiculo.getAno(),
+                veiculo.getCategoria()
 
 
         );

@@ -9,6 +9,9 @@ import com.alyson.apiestetica.repository.VeiculoRepository;
 import com.alyson.apiestetica.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class VeiculoService {
 
@@ -40,6 +43,10 @@ public class VeiculoService {
         Veiculo veiculo = veiculoRepository.findById(id).orElseThrow(() -> new RuntimeException("Veiculo " + id + "nao encontrado"));
         return new VeiculoResponseDTO(veiculo);
 
+    }
+    public List<VeiculoResponseDTO> listarTodos(){
+        List<Veiculo> veiculos =veiculoRepository.findAll();
+        return veiculos.stream().map(x -> new VeiculoResponseDTO(x)).collect(Collectors.toList());
     }
 
 //    public List<CarroResponseDTO> buscarCarroCliente(Long id) {

@@ -70,8 +70,8 @@ public class ClienteController {
             description = "Remove um cliente do sistema a partir do seu identificador."
     )
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> excluir(@PathVariable Long id) {
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         clienteService.excluir(id);
         return ResponseEntity.noContent().build();
     }

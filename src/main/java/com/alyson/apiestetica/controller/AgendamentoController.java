@@ -2,9 +2,11 @@ package com.alyson.apiestetica.controller;
 
 import com.alyson.apiestetica.entity.request.AgendamentoRequestDTO;
 import com.alyson.apiestetica.entity.response.AgendamentoResponseDTO;
+import com.alyson.apiestetica.enums.StatusAgendamento;
 import com.alyson.apiestetica.services.AgendamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +31,7 @@ public class AgendamentoController {
             description = "Cria um novo agendamento para um veículo existente e vincula os serviços selecionados, registrando o preço cobrado de cada serviço no momento do agendamento."
     )
     @PostMapping("/cadastrar")
-    public ResponseEntity<AgendamentoResponseDTO> cadastrar(@RequestBody AgendamentoRequestDTO dto) {
+    public ResponseEntity<AgendamentoResponseDTO> cadastrar(@Valid @RequestBody AgendamentoRequestDTO dto) {
         var cadastrar = agendamentoService.cadastrar(dto);
         return ResponseEntity.ok(cadastrar);
     }
@@ -83,11 +85,10 @@ public class AgendamentoController {
             summary = "Alterar status do agendamento",
             description = "Altera o status atual do agendamento de acordo com o fluxo definido pela regra de negócio."
     )
-    @PatchMapping("/{id}")
-    public ResponseEntity<AgendamentoResponseDTO> alterarStatus(@PathVariable Long id) {
-        var alterar = agendamentoService.alterarStatus(id);
-        return ResponseEntity.ok(alterar);
-
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<AgendamentoResponseDTO> alterarStatus(@PathVariable Long id, @RequestParam StatusAgendamento status) {
+        var agendamento = agendamentoService.alterarStatus(id, status);
+        return ResponseEntity.ok(agendamento);
     }
 
 

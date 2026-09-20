@@ -9,7 +9,7 @@ import java.util.List;
 
 public record AgendamentoResponseDTO(
         Long idAgendamento,
-        Long idCarro,
+        Long idVeiculo,
         LocalDateTime horarioInicio,
         LocalDateTime horarioFinal,
         StatusAgendamento status,

@@ -83,7 +83,7 @@ public class ServicoController {
             description = "Desativa um serviço sem removê-lo do banco de dados, preservando o histórico dos agendamentos anteriores."
     )
 
-    @PatchMapping("desativar/{id}")
+    @PatchMapping("/desativar/{id}")
     public ResponseEntity<Void> desativarServico(@PathVariable Long id) {
         servicoService.desativarServico(id);
         return ResponseEntity.noContent().build();

@@ -1,6 +1,7 @@
 package com.alyson.apiestetica.entity;
 
 import com.alyson.apiestetica.entity.request.VeiculoRequestDTO;
+import com.alyson.apiestetica.enums.CategoriaVeiculo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "carro")
+@Table(name = "veiculo")
 public class Veiculo {
 
     @Id
@@ -38,7 +39,9 @@ public class Veiculo {
 
     @Column(name = "ano")
     private Integer ano;
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    private CategoriaVeiculo categoria;
 
     public Veiculo(VeiculoRequestDTO dto, Cliente cliente){
         this.cliente = cliente;
@@ -51,8 +54,9 @@ public class Veiculo {
     public void AtualizarDados(VeiculoRequestDTO dto){
         this.modelo = dto.modelo();
         this.marca = dto.marca();
-        this.placa = dto.marca();
+        this.placa = dto.placa();
         this.cor = dto.cor();
         this.ano = dto.ano();
+        this.categoria = dto.categoria();
     }
 }
