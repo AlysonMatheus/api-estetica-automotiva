@@ -7,8 +7,5 @@ import java.time.LocalDateTime;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
 
-    boolean existsByHorarioInicioLessThanAndHorarioFinalGreaterThan(
-            LocalDateTime horarioFinal,
-            LocalDateTime horarioInicio
-    );
+
 }

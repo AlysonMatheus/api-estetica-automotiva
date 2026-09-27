@@ -5,6 +5,9 @@ import com.alyson.apiestetica.entity.*;
 import com.alyson.apiestetica.entity.request.AgendamentoRequestDTO;
 import com.alyson.apiestetica.entity.response.AgendamentoResponseDTO;
 import com.alyson.apiestetica.enums.StatusAgendamento;
+import com.alyson.apiestetica.execption.AgendamentoNaoEncontradoExcpetion;
+import com.alyson.apiestetica.execption.ServicoNaoEncontradoException;
+import com.alyson.apiestetica.execption.VeiculoNaoEncontradoException;
 import com.alyson.apiestetica.repository.AgendamentoRepository;
 import com.alyson.apiestetica.repository.VeiculoRepository;
 import com.alyson.apiestetica.repository.ServicoRepository;
@@ -28,22 +31,12 @@ public class AgendamentoService {
     }
 
     @Transactional
-    public AgendamentoResponseDTO cadastrar(
-            AgendamentoRequestDTO dto
-    ) {
+    public AgendamentoResponseDTO cadastrar(AgendamentoRequestDTO dto) {
         if (!dto.horarioFinal().isAfter(dto.horarioInicio())) {
             throw new RuntimeException("O horário final deve ser posterior ao horário inicial");
-        }
-        boolean existeConflito =
-                agendamentoRepository.existsByHorarioInicioLessThanAndHorarioFinalGreaterThan(
-                        dto.horarioFinal(),
-                        dto.horarioInicio()
-                );
 
-        if (existeConflito) {
-            throw new RuntimeException("Já existe um agendamento neste horário");
         }
-        Veiculo veiculo = veiculoRepository.findById(dto.idVeiculo()).orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+        Veiculo veiculo = veiculoRepository.findById(dto.idVeiculo()).orElseThrow(() -> new VeiculoNaoEncontradoException("Veículo não encontrado"));
 
         Agendamento agendamento = new Agendamento(dto, veiculo);
 
@@ -51,7 +44,7 @@ public class AgendamentoService {
 
 
         dto.servicos().forEach(item -> {
-            Servico servico = servicoRepository.findById(item.idServico()).orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+            Servico servico = servicoRepository.findById(item.idServico()).orElseThrow(() -> new ServicoNaoEncontradoException("Serviço não encontrado"));
             AgendamentoServicoId id = new AgendamentoServicoId(agendamento.getIdAgendamento(), servico.getIdServico());
             AgendamentoServico agendamentoServico = new AgendamentoServico(id, agendamento, servico, item.precoCobrado());
             agendamento.getServicos().add(agendamentoServico);
@@ -65,18 +58,16 @@ public class AgendamentoService {
     @Transactional
     public AgendamentoResponseDTO editar(Long id, AgendamentoRequestDTO dto) {
         Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Agendamento " + id + " não encontrado"));
-        Veiculo veiculo = veiculoRepository.findById(dto.idVeiculo()).orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+
 
         if (!dto.horarioFinal().isAfter(dto.horarioInicio())) {
             throw new RuntimeException("O horário final deve ser posterior ao horário inicial");
         }
 
-        agendamento.atualizarDados(dto);
-        agendamento.setVeiculo(veiculo);
-        agendamento.getServicos().clear();
+        
 
         dto.servicos().forEach(item -> {
-            Servico servico = servicoRepository.findById(item.idServico()).orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+            Servico servico = servicoRepository.findById(item.idServico()).orElseThrow(() -> new ServicoNaoEncontradoException("Serviço não encontrado"));
             AgendamentoServicoId servicoId = new AgendamentoServicoId(agendamento.getIdAgendamento(), servico.getIdServico());
             AgendamentoServico agendamentoServico = new AgendamentoServico(servicoId, agendamento, servico, item.precoCobrado());
             agendamento.getServicos().add(agendamentoServico);
@@ -87,13 +78,13 @@ public class AgendamentoService {
     }
 
     public void excluir(Long id) {
-        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Agendamento" + id + "não encontrado"));
+        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(() -> new AgendamentoNaoEncontradoExcpetion("Agendamento" + id + "não encontrado"));
         agendamentoRepository.delete(agendamento);
 
     }
 
     public AgendamentoResponseDTO buscarAgendamento(Long id) {
-        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
+        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(() -> new AgendamentoNaoEncontradoExcpetion("Agendamento não encontrado"));
         return new AgendamentoResponseDTO(agendamento);
     }
 
@@ -102,7 +93,7 @@ public class AgendamentoService {
     }
 
     public AgendamentoResponseDTO alterarStatus(Long id, StatusAgendamento novoStatus) {
-        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Agendamento " + id + " não encontrado"));
+        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(() -> new AgendamentoNaoEncontradoExcpetion("Agendamento " + id + " não encontrado"));
 
         StatusAgendamento statusAtual = agendamento.getStatus();
 

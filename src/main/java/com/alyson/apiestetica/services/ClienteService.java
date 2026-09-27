@@ -4,6 +4,7 @@ package com.alyson.apiestetica.services;
 import com.alyson.apiestetica.entity.Cliente;
 import com.alyson.apiestetica.entity.request.ClienteRequestDTO;
 import com.alyson.apiestetica.entity.response.ClienteResponseDTO;
+import com.alyson.apiestetica.execption.ClienteNaoEncontradoException;
 import com.alyson.apiestetica.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class ClienteService {
 
 
     public ClienteResponseDTO atualizar(Long id, ClienteRequestDTO dto) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não econtrado"));
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não econtrado"));
         cliente.AtualizarDados(dto);
         clienteRepository.save(cliente);
         return new ClienteResponseDTO(cliente);
@@ -39,12 +40,12 @@ public class ClienteService {
     }
 
     public List<ClienteResponseDTO>listarPorCliente(Long id){
-        Cliente clientes = clienteRepository.findById(id).orElseThrow(()->new RuntimeException("Cliente não econtrado"));
+        Cliente clientes = clienteRepository.findById(id).orElseThrow(()->new ClienteNaoEncontradoException("Cliente não econtrado"));
       return List.of(new ClienteResponseDTO(clientes));
 
     }
     public void excluir(Long id){
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(()-> new RuntimeException("Cliente não econtrado"));
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(()-> new ClienteNaoEncontradoException("Cliente não econtrado"));
         clienteRepository.delete(cliente);
     }
 }

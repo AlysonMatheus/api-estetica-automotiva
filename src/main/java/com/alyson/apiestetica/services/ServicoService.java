@@ -5,6 +5,7 @@ import com.alyson.apiestetica.entity.Agendamento;
 import com.alyson.apiestetica.entity.Servico;
 import com.alyson.apiestetica.entity.request.ServicoRequestDTO;
 import com.alyson.apiestetica.entity.response.ServicoResponseDTO;
+import com.alyson.apiestetica.execption.ServicoNaoEncontradoException;
 import com.alyson.apiestetica.repository.AgendamentoRepository;
 import com.alyson.apiestetica.repository.ServicoRepository;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class ServicoService {
     }
 
     public ServicoResponseDTO buscarServico(Long id) {
-        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Servico não encontrado"));
+        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new ServicoNaoEncontradoException("Servico não encontrado"));
         return new ServicoResponseDTO(servico);
 
     }
@@ -42,20 +43,20 @@ public class ServicoService {
     }
 
     public ServicoResponseDTO atualizar(Long id, ServicoRequestDTO dto) {
-        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Servico não encontrado"));
+        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new ServicoNaoEncontradoException("Servico não encontrado"));
         servico.AtualizarDados(dto);
         servicoRepository.save(servico);
         return new ServicoResponseDTO(servico);
     }
 
     public void ativarServico(Long id) {
-        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Servico não encontrado"));
+        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new ServicoNaoEncontradoException("Servico não encontrado"));
         servico.setAtivo(true);
         servicoRepository.save(servico);
     }
 
     public void desativarServico(Long id) {
-        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Servico não encontrado"));
+        Servico servico = servicoRepository.findById(id).orElseThrow(() -> new ServicoNaoEncontradoException("Servico não encontrado"));
         servico.setAtivo(false);
         servicoRepository.save(servico);
     }
